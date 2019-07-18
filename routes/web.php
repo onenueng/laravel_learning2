@@ -60,7 +60,38 @@ Route::post('/tasks/store', function(Illuminate\Http\Request $request){
     // $task->detail = $request->detail;
     // $task->status = $request->status;
     // $task->save();
+    $validation = $request->validate([
+        'type'=> 'required',
+        'name'=> 'required|max:255',
+        'detail'=> 'required'
+    ]);
 
     App\Task::create($request->all()); //function create เพื่อรับค่าเข้าตาราง แต่เราต้องไปบันทึก fillable ที่ file task.php
     return redirect()->back()->with('success','Created Successfully !!');
 });
+
+Route::get('/tasks/{id}',function($id){
+    $types[] = ['id' => 1, 'name' => 'Support'];
+    $types[] = ['id' => 2, 'name' => 'Maintain'];
+    $types[] = ['id' => 3, 'name' => 'Change Requirement']; 
+
+    $statuses[] = ['id' => 0, 'name' => 'Incompleate'];
+    $statuses[] = ['id' => 1, 'name' => 'compleate'];
+
+    $task = App\Task::find($id);
+
+    return view('tasks.edit')->with(['types'=>$types,'statuses'=>$statuses,'task'=> $task]);
+});
+
+Route::PUT('/tasks/{id}',function(Illuminate\Http\Request $request,$id){
+    $validation = $request->validate([
+        'type'=> 'required',
+        'name'=> 'required|max:255',
+        'detail'=> 'required'
+    ]);
+    
+    App\Task::find($id)->update($request->all()); //ทำการ update
+    //return $request->all();
+    return redirect()->back()->with('success','Edited Successfully !!');
+});
+
