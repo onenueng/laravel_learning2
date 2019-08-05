@@ -23,11 +23,7 @@ Route::get('/', function () {
 //     return 'username ' . $name;
 // });
 
-Route::get('/index', function(){
-    $title = "create Form";
 
-    return view('index')->with(['title'=>$title]);
-});
 
 
 
@@ -48,10 +44,10 @@ Route::get('/tasks/create',function(){
 
 
 
-// Route::get('/index', function () {
-   
-//     return view('index');
-// });
+Route::get('/index', function () {
+       
+    return view('tasks.index')->with(['tasks'=>\App\Task::all()]);
+});
 
 Route::post('/tasks/store', function(Illuminate\Http\Request $request){
     // $task = new \App\Task();
