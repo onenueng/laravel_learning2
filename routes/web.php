@@ -45,8 +45,8 @@ Route::get('/tasks/create',function(){
 
 
 Route::get('/index', function () {
-       
-    return view('tasks.index')->with(['tasks'=>\App\Task::all()]);
+    $title = "create Form";
+    return view('tasks.index')->with(['tasks'=>\App\Task::all(),'title'=>$title]);
 });
 
 Route::post('/tasks/store', function(Illuminate\Http\Request $request){

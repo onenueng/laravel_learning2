@@ -28,8 +28,13 @@
       <td>{{$task->detail}}</td>
       <td>{{$task->status? 'Completed':'Incomplete'}}</td>
       <td>
+        <form id="check-complate-{{ $task->id }}" action="/tasks/{{ $task->id }}" method="POST" style="display: none;">
+              @csrf
+              @method('patch')
+             <input type="hidden" name="status" value="1">
+        </form>
         @if(!$task->status)
-        <button class="btn btn-sm btn-info">Completed</button>
+        <button class="btn btn-sm btn-info" onclick="document.getElementById('check-complete-{{ $task->id }}'.submit()">Completed</button>
         @endif
       </td>
       <td>
@@ -37,24 +42,6 @@
       </td>
     </tr>
     @endforeach
-    <tr>
-      <th scope="row">2</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
   </tbody>
 </table>
 
