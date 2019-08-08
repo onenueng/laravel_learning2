@@ -8,6 +8,8 @@
 
 <table class="table">
 <h1 class="text-center">Tasks</h1>
+@include ('tasks._form')
+
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -23,7 +25,7 @@
     @foreach($tasks as $task)
     <tr>
       <th scope="row">{{$task->id}}</th>
-      <td>{{$task->type}}</td>
+      <td>{{$task->getTypeName()}}</td> <!--เปลี่ยนจาก$task->type เป็น gettypenameตามtask.php-->
       <td>{{$task->name}}</td>
       <td>{{$task->detail}}</td>
       <td>{{$task->status? 'Completed':'Incomplete'}}</td>
@@ -34,11 +36,25 @@
              <input type="hidden" name="status" value="1">
         </form>
         @if(!$task->status)
-        <button class="btn btn-sm btn-info" onclick="document.getElementById('check-complete-{{ $task->id }}'.submit()">Completed</button>
+        <button 
+          class="btn btn-sm btn-info" 
+          onclick="document.getElementById('check-complate-{{ $task->id }}').submit()">Completed
+        </button>
         @endif
       </td>
       <td>
-        <button class="btn btn-sm btn-info" href="{{ url('tasks', $task->id) }}">Edit</button>
+      
+        <a class="btn btn-sm btn-info" role="button" href="{{ url('/tasks', $task->id) }}">Edit</a>
+        <form id="delete-task-{{ $task->id }}" action="/tasks/{{ $task->id }}" method="POST" style="display: none;">
+              @csrf
+              @method('delete')
+        </form>
+        @if(!$task->status)
+          <button 
+            class ="btn btn-sm btn-danger"
+            onclickk="document.getElementById('delete-task-{{ $task->id }}').submit()"
+          >Delete</button>
+        @endif
       </td>
     </tr>
     @endforeach

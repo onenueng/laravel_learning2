@@ -46,8 +46,19 @@ Route::get('/tasks/create',function(){
 
 Route::get('/index', function () {
     $title = "create Form";
+    $data = request()->all();
+    if (request()->has ('status')){
+        $data['status'] = true;
+    }
     return view('tasks.index')->with(['tasks'=>\App\Task::all(),'title'=>$title]);
 });
+
+Route::patch('/tasks/{id}', function ($id) {//เป็น route ของเวลาที่กดปุ่ม complete แล้วจะ update ค่า status จะเปลี่ยนไปและปุ่มจะหายไป
+    $task = App\Task::find($id);
+    $task->update(request()->all());
+    return back();
+});
+
 
 Route::post('/tasks/store', function(Illuminate\Http\Request $request){
     // $task = new \App\Task();
@@ -90,4 +101,6 @@ Route::PUT('/tasks/{id}',function(Illuminate\Http\Request $request,$id){
     //return $request->all();
     return redirect()->back()->with('success','Edited Successfully !!');
 });
+
+
 
