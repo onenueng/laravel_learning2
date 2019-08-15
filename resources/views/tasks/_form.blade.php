@@ -15,6 +15,7 @@
   </div>
 @endif
 
+
 <form action="{{ url('tasks/store') }}" method="POST">
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
   <div class="form-group">
@@ -57,4 +58,4 @@
 </div>
 </form>
 </div>
-</div>
+

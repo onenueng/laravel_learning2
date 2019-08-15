@@ -8,8 +8,8 @@
 
 <table class="table">
 <h1 class="text-center">Tasks</h1>
-@include ('tasks._form')
-
+  @include('tasks._form')
+  
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -44,7 +44,7 @@
       </td>
       <td>
       
-        <a class="btn btn-sm btn-info" role="button" href="{{ url('/tasks', $task->id) }}">Edit</a>
+        <!-- <a class="btn btn-sm btn-info" role="button" href="{{ url('/tasks', $task->id) }}">Edit</a>
         <form id="delete-task-{{ $task->id }}" action="/tasks/{{ $task->id }}" method="POST" style="display: none;">
               @csrf
               @method('delete')
@@ -54,8 +54,8 @@
             class ="btn btn-sm btn-danger"
             onclickk="document.getElementById('delete-task-{{ $task->id }}').submit()"
           >Delete</button>
-        @endif
-      </td>
+        @endif -->
+      </td> 
     </tr>
     @endforeach
   </tbody>
