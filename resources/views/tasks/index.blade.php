@@ -4,7 +4,7 @@
 
 @section('content')
 
-<!-- {{ $title }} -->
+
 
 <table class="table">
 <h1 class="text-center">Tasks</h1>
@@ -44,7 +44,7 @@
       </td>
       <td>
       
-        <!-- <a class="btn btn-sm btn-info" role="button" href="{{ url('/tasks', $task->id) }}">Edit</a>
+        <a class="btn btn-sm btn-success" role="button" href="{{ url('/tasks', $task->id) }}">Edit</a>
         <form id="delete-task-{{ $task->id }}" action="/tasks/{{ $task->id }}" method="POST" style="display: none;">
               @csrf
               @method('delete')
@@ -54,7 +54,7 @@
             class ="btn btn-sm btn-danger"
             onclickk="document.getElementById('delete-task-{{ $task->id }}').submit()"
           >Delete</button>
-        @endif -->
+        @endif 
       </td> 
     </tr>
     @endforeach

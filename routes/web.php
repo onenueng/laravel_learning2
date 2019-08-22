@@ -45,12 +45,19 @@ Route::get('/tasks/create',function(){
 
 
 Route::get('/index', function () {
+    $types[] = ['id' => 1, 'name' => 'Support'];
+    $types[] = ['id' => 2, 'name' => 'Maintain'];
+    $types[] = ['id' => 3, 'name' => 'Change Requirement']; 
+
+    $statuses[] = ['id' => 0, 'name' => 'Incompleate'];
+    $statuses[] = ['id' => 1, 'name' => 'compleate'];
+
     $title = "create Form";
     $data = request()->all();
     if (request()->has ('status')){
         $data['status'] = true;
     }
-    return view('tasks.index')->with(['tasks'=>\App\Task::all(),'title'=>$title]);
+    return view('tasks.index')->with(['tasks'=>\App\Task::all(),'title'=>$title,'types'=>$types,'statuses'=>$statuses]);
 });
 
 Route::patch('/tasks/{id}', function ($id) {//เป็น route ของเวลาที่กดปุ่ม complete แล้วจะ update ค่า status จะเปลี่ยนไปและปุ่มจะหายไป
@@ -87,7 +94,20 @@ Route::get('/tasks/{id}',function($id){
 
     $task = App\Task::find($id);
 
-    return view('tasks.edit')->with(['types'=>$types,'statuses'=>$statuses,'task'=> $task]);
+    $tasks = App\Task::all();
+        if(empty($task)){
+            return "Not found";
+        }
+    
+
+    //return view('tasks.edit')->with(['types'=>$types,'statuses'=>$statuses,'task'=> $task]);
+    return view('tasks.index')
+           ->with([
+                    'types'=>$types,
+                    'statuses'=>$statuses,
+                    'task'=> $task,
+                    'tasks'=>$tasks,
+                ]);
 });
 
 Route::PUT('/tasks/{id}',function(Illuminate\Http\Request $request,$id){

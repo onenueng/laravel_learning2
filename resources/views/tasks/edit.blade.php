@@ -31,9 +31,9 @@
 @endif
 
 <div class="text-center"><h2> Edit Task </h2></div>
-<form action="{{ url('/tasks',$task->id) }}" method="POST">
+
+
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-<input type="hidden" name="_method" value="PUT">
   <div class="form-group">
     <label for="type">Type: </label>
     <select class="form-control" id="type" name="type">
