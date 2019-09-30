@@ -17,6 +17,7 @@
       <th scope="col">Task Name</th>
       <th scope="col">Detail</th>
       <th scope="col">Status</th>
+      <th scope ="col">File</th>
       <th scope="col">Action</th>
       <th scope="col">Manage</th>
     </tr>
@@ -29,6 +30,7 @@
       <td>{{$task->name}}</td>
       <td>{{$task->detail}}</td>
       <td>{{$task->status? 'Completed':'Incomplete'}}</td>
+      <td><a href="{{ url('storage/' . $task->file_upload)}}">ดู File</a></td>
       <td>
         <form id="check-complate-{{ $task->id }}" action="/tasks/{{ $task->id }}" method="POST" style="display: none;">
               @csrf

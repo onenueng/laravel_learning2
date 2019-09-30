@@ -32,95 +32,36 @@ Route::get('/', function () {
 //     return "Login Success";
 // });
 
-Route::get('/tasks/create',function(){
-    $types[] = ['id' => 1, 'name' => 'Support'];
-    $types[] = ['id' => 2, 'name' => 'Maintain'];
-    $types[] = ['id' => 3, 'name' => 'Change Requirement']; 
+Route::get('/tasks/create','TaskController@create');
 
-    $statuses[] = ['id' => 0, 'name' => 'Incompleate'];
-    $statuses[] = ['id' => 1, 'name' => 'compleate'];
-    return view('tasks.create')->with([ 'types' => $types, 'statuses' => $statuses ]);
+
+
+Route::get('/index', 'TaskController@index');
+
+
+
+
+Route::post('/tasks/store', 'TaskController@store');
+
+Route::get('/tasks/{id}','TaskController@edit');
+
+Route::PUT('/tasks/{id}','TaskController@update');
+
+Route::patch('/tasks/{task}', 'TaskController@updateStatus');//เป็น route ของเวลาที่กดปุ่ม complete แล้วจะ update ค่า status จะเปลี่ยนไปและปุ่มจะหายไป
+    
+
+
+Route::get('/upload',function(){
+    return view('upload-file');
 });
+Route::post('/upload', function() {
+    if(request()->hasFile('file_upload')) {
+        $path = request()->file('file_upload')->store('/');
 
-
-
-Route::get('/index', function () {
-    $types[] = ['id' => 1, 'name' => 'Support'];
-    $types[] = ['id' => 2, 'name' => 'Maintain'];
-    $types[] = ['id' => 3, 'name' => 'Change Requirement']; 
-
-    $statuses[] = ['id' => 0, 'name' => 'Incompleate'];
-    $statuses[] = ['id' => 1, 'name' => 'compleate'];
-
-    $title = "create Form";
-    $data = request()->all();
-    if (request()->has ('status')){
-        $data['status'] = true;
+        $time_stamps = new \App\Imports\TimeStampsImport();
+        $time_stamps->import(storage_path('app/' . $path));
+    }else{
+        return 'no file';
     }
-    return view('tasks.index')->with(['tasks'=>\App\Task::all(),'title'=>$title,'types'=>$types,'statuses'=>$statuses]);
+    return redirect()->back()->with('message', 'IT WORKS!');
 });
-
-Route::patch('/tasks/{id}', function ($id) {//เป็น route ของเวลาที่กดปุ่ม complete แล้วจะ update ค่า status จะเปลี่ยนไปและปุ่มจะหายไป
-    $task = App\Task::find($id);
-    $task->update(request()->all());
-    return back();
-});
-
-
-Route::post('/tasks/store', function(Illuminate\Http\Request $request){
-    // $task = new \App\Task();
-    // $task->type = $request->type;
-    // $task->name = $request->name;
-    // $task->detail = $request->detail;
-    // $task->status = $request->status;
-    // $task->save();
-    $validation = $request->validate([
-        'type'=> 'required',
-        'name'=> 'required|max:255',
-        'detail'=> 'required'
-    ]);
-
-    App\Task::create($request->all()); //function create เพื่อรับค่าเข้าตาราง แต่เราต้องไปบันทึก fillable ที่ file task.php
-    return redirect()->back()->with('success','Created Successfully !!');
-});
-
-Route::get('/tasks/{id}',function($id){
-    $types[] = ['id' => 1, 'name' => 'Support'];
-    $types[] = ['id' => 2, 'name' => 'Maintain'];
-    $types[] = ['id' => 3, 'name' => 'Change Requirement']; 
-
-    $statuses[] = ['id' => 0, 'name' => 'Incompleate'];
-    $statuses[] = ['id' => 1, 'name' => 'compleate'];
-
-    $task = App\Task::find($id);
-
-    $tasks = App\Task::all();
-        if(empty($task)){
-            return "Not found";
-        }
-    
-
-    //return view('tasks.edit')->with(['types'=>$types,'statuses'=>$statuses,'task'=> $task]);
-    return view('tasks.index')
-           ->with([
-                    'types'=>$types,
-                    'statuses'=>$statuses,
-                    'task'=> $task,
-                    'tasks'=>$tasks,
-                ]);
-});
-
-Route::PUT('/tasks/{id}',function(Illuminate\Http\Request $request,$id){
-    $validation = $request->validate([
-        'type'=> 'required',
-        'name'=> 'required|max:255',
-        'detail'=> 'required'
-    ]);
-    
-    App\Task::find($id)->update($request->all()); //ทำการ update
-    //return $request->all();
-    return redirect()->back()->with('success','Edited Successfully !!');
-});
-
-
-
